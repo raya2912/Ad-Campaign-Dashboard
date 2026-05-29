@@ -87,34 +87,34 @@ The relational database is configured in PostgreSQL. Foreign key constraints enf
 
 ```mermaid
 erDiagram
-    User ||--o{ Campaign : "owns (1-to-N)"
-    User ||--o{ ActivityLog : "generates (1-to-N)"
-    Campaign ||--|| Metric : "has metrics (1-to-1 Cascade)"
-    Campaign ||--o{ AIInsight : "receives insights (1-to-N Cascade)"
+    User ||--o{ Campaign : owns
+    User ||--o{ ActivityLog : generates
+    Campaign ||--|| Metric : has_metrics
+    Campaign ||--o{ AIInsight : receives_insights
 
     User {
-        string id PK
-        string email UNIQUE
+        string id
+        string email
         string password
         string name
-        Role role "ADMIN | ADVERTISER"
+        string role
         datetime createdAt
     }
 
     Campaign {
-        string id PK
+        string id
         string name
         float budget
-        CampaignStatus status "DRAFT | ACTIVE | PAUSED | COMPLETED | DELETED"
+        string status
         datetime startDate
         datetime endDate
-        string userId FK
+        string userId
         datetime createdAt
     }
 
     Metric {
-        string id PK
-        string campaignId FK "onDelete: Cascade"
+        string id
+        string campaignId
         int impressions
         int clicks
         float spend
@@ -123,23 +123,43 @@ erDiagram
     }
 
     AIInsight {
-        string id PK
-        string campaignId FK "onDelete: Cascade"
-        string type "ALERT | RECOMMENDATION | TREND"
+        string id
+        string campaignId
+        string type
         string message
         datetime createdAt
     }
 
     ActivityLog {
-        string id PK
-        string userId FK
+        string id
+        string userId
         string action
         string details
         datetime createdAt
     }
 ```
 
+### Enum Values
+
+**Role**
+- ADMIN
+- ADVERTISER
+
+**Campaign Status**
+- DRAFT
+- ACTIVE
+- PAUSED
+- COMPLETED
+- DELETED
+
+**AI Insight Types**
+- ALERT
+- RECOMMENDATION
+- TREND
+
 ---
+
+
 
 ## 🔌 API Architecture
 
